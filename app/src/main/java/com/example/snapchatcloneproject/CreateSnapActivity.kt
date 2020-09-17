@@ -36,12 +36,12 @@ class CreateSnapActivity : AppCompatActivity() {
         createSnapImageView = findViewById(R.id.createSnapImageView)
         messageEditText = findViewById(R.id.messageEditText)
     }
-
+    //get photo function
     fun getPhoto(){
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(intent, 1);
     }
-
+    //choose image function
     fun chooseImageClicked(view: View) {
         if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 1)
@@ -65,7 +65,7 @@ class CreateSnapActivity : AppCompatActivity() {
 
         }
     }
-
+    //grant permission to access file storage
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
@@ -75,7 +75,7 @@ class CreateSnapActivity : AppCompatActivity() {
             }
         }
     }
-
+    //next click function (using firebase)
     fun nextClicked(view: View){
 
         createSnapImageView?.setDrawingCacheEnabled(true)
@@ -93,6 +93,11 @@ class CreateSnapActivity : AppCompatActivity() {
             // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
             val downloadUrl = taskSnapshot.uploadSessionUri
             Log.i("URL", downloadUrl.toString())
+            val intent = Intent(this,ChooseUserActivity::class.java)
+            intent.putExtra("imageURL",downloadUrl.toString())
+            intent.putExtra("imageName",imageName)
+            intent.putExtra("message",messageEditText?.text.toString())
+            startActivity(intent)
         })
 
     }

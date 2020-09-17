@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
             logIn()
         }
     }
-
+    //on go function click
     fun goClicked(view: View) {
         // Check if we can log in the user
         mAuth.signInWithEmailAndPassword(emailEditText?.text.toString(), passwordEditText?.text.toString())
@@ -42,6 +42,11 @@ class MainActivity : AppCompatActivity() {
                     // Sign up the user
                     mAuth.createUserWithEmailAndPassword(emailEditText?.text.toString(), passwordEditText?.text.toString()).addOnCompleteListener(this) { task ->
                         if (task.isSuccessful) {
+                            task.result?.user?.uid?.let {
+                                FirebaseDatabase.getInstance().getReference().child("users").child(
+                                    it
+                                ).child("email").setValue(emailEditText?.text.toString())
+                            }
                             logIn()
                         } else {
                             Toast.makeText(this,"Login Failed. Try Again.", Toast.LENGTH_SHORT).show()
@@ -50,6 +55,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
     }
+    //login function
     fun logIn() {
         // Move to next Activity
         val intent = Intent(this, SnapsActivity::class.java)

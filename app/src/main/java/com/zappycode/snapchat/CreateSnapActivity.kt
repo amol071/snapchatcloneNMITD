@@ -1,24 +1,24 @@
-package com.example.snapchatcloneproject
+package com.zappycode.snapchat
 
 import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
+import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
+import com.google.firebase.storage.UploadTask
+import com.google.android.gms.tasks.OnSuccessListener
+import android.support.annotation.NonNull
+import com.google.android.gms.tasks.OnFailureListener
 import android.graphics.Bitmap
 import android.util.Log
 import android.widget.Toast
-import java.io.ByteArrayOutputStream
-import com.google.android.gms.tasks.OnSuccessListener
-import com.google.android.gms.tasks.OnFailureListener
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.UploadTask
-import com.google.firebase.storage.StorageTask
+import java.io.ByteArrayOutputStream
 import java.util.*
 
 
@@ -28,7 +28,6 @@ class CreateSnapActivity : AppCompatActivity() {
     var messageEditText: EditText? = null
     val imageName = UUID.randomUUID().toString() + ".jpg"
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_snap)
@@ -36,12 +35,12 @@ class CreateSnapActivity : AppCompatActivity() {
         createSnapImageView = findViewById(R.id.createSnapImageView)
         messageEditText = findViewById(R.id.messageEditText)
     }
-    //get photo function
-    fun getPhoto(){
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(intent, 1);
+
+    fun getPhoto() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        startActivityForResult(intent, 1)
     }
-    //choose image function
+
     fun chooseImageClicked(view: View) {
         if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 1)
@@ -65,7 +64,7 @@ class CreateSnapActivity : AppCompatActivity() {
 
         }
     }
-    //grant permission to access file storage
+
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
@@ -75,8 +74,8 @@ class CreateSnapActivity : AppCompatActivity() {
             }
         }
     }
-    //next click function (using firebase)
-    fun nextClicked(view: View){
+
+    fun nextClicked(view: View) {
 
         createSnapImageView?.setDrawingCacheEnabled(true)
         createSnapImageView?.buildDrawingCache()
@@ -85,15 +84,18 @@ class CreateSnapActivity : AppCompatActivity() {
         bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val data = baos.toByteArray()
 
+
+
         val uploadTask = FirebaseStorage.getInstance().getReference().child("images").child(imageName).putBytes(data)
         uploadTask.addOnFailureListener(OnFailureListener {
             // Handle unsuccessful uploads
             Toast.makeText(this,"UploadFailed",Toast.LENGTH_SHORT).show()
         }).addOnSuccessListener(OnSuccessListener<UploadTask.TaskSnapshot> { taskSnapshot ->
             // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
-            val downloadUrl = taskSnapshot.uploadSessionUri
+            val downloadUrl = taskSnapshot.downloadUrl
             Log.i("URL", downloadUrl.toString())
-            val intent = Intent(this,ChooseUserActivity::class.java)
+
+            val intent = Intent(this, ChooseUserActivity::class.java)
             intent.putExtra("imageURL",downloadUrl.toString())
             intent.putExtra("imageName",imageName)
             intent.putExtra("message",messageEditText?.text.toString())

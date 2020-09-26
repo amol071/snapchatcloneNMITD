@@ -1,4 +1,4 @@
-package com.example.snapchatcloneproject
+package com.zappycode.snapchat
 
 import org.junit.Test
 

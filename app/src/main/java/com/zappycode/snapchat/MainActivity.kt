@@ -1,5 +1,6 @@
-package com.example.snapchatcloneproject
+package com.zappycode.snapchat
 
+import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
@@ -8,11 +9,12 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.AuthResult
 import com.google.android.gms.tasks.Task
+import android.support.annotation.NonNull
 import com.google.android.gms.tasks.OnCompleteListener
 import android.R.attr.password
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.database.FirebaseDatabase
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -31,31 +33,27 @@ class MainActivity : AppCompatActivity() {
             logIn()
         }
     }
-    //on go function click
+
     fun goClicked(view: View) {
         // Check if we can log in the user
         mAuth.signInWithEmailAndPassword(emailEditText?.text.toString(), passwordEditText?.text.toString())
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    logIn()
-                } else {
-                    // Sign up the user
-                    mAuth.createUserWithEmailAndPassword(emailEditText?.text.toString(), passwordEditText?.text.toString()).addOnCompleteListener(this) { task ->
-                        if (task.isSuccessful) {
-                            task.result?.user?.uid?.let {
-                                FirebaseDatabase.getInstance().getReference().child("users").child(
-                                    it
-                                ).child("email").setValue(emailEditText?.text.toString())
+                .addOnCompleteListener(this) { task ->
+                    if (task.isSuccessful) {
+                        logIn()
+                    } else {
+                        // Sign up the user
+                        mAuth.createUserWithEmailAndPassword(emailEditText?.text.toString(), passwordEditText?.text.toString()).addOnCompleteListener(this) { task ->
+                            if (task.isSuccessful) {
+                                FirebaseDatabase.getInstance().getReference().child("users").child(task.result.user.uid).child("email").setValue(emailEditText?.text.toString())
+                                logIn()
+                            } else {
+                                Toast.makeText(this,"Login Failed. Try Again.", Toast.LENGTH_SHORT).show()
                             }
-                            logIn()
-                        } else {
-                            Toast.makeText(this,"Login Failed. Try Again.", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
-            }
     }
-    //login function
+
     fun logIn() {
         // Move to next Activity
         val intent = Intent(this, SnapsActivity::class.java)

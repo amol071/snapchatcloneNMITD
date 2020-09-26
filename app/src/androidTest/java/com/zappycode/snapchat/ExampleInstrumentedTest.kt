@@ -1,4 +1,4 @@
-package com.example.snapchatcloneproject
+package com.zappycode.snapchat
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
@@ -18,7 +18,7 @@ class ExampleInstrumentedTest {
     @Test
     fun useAppContext() {
         // Context of the app under test.
-        val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.example.snapchatcloneproject", appContext.packageName)
+        val appContext = InstrumentationRegistry.getTargetContext()
+        assertEquals("com.zappycode.snapchat", appContext.packageName)
     }
 }

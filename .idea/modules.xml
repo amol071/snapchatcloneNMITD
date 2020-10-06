@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Snapchat.iml" filepath="$PROJECT_DIR$/Snapchat.iml" group="Snapchat" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="Snapchat/app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SnapchatClone_Project.iml" filepath="$PROJECT_DIR$/.idea/modules/SnapchatClone_Project.iml" group="SnapchatClone_Project" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="SnapchatClone Project/app" />
     </modules>
   </component>
 </project>

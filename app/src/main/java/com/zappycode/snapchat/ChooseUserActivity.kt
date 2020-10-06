@@ -3,9 +3,7 @@
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.ListView
+import android.widget.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
@@ -49,6 +47,7 @@ class ChooseUserActivity : AppCompatActivity() {
             val intent = Intent(this, SnapsActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             startActivity(intent)
+            Toast.makeText(this,"Image Sent!", Toast.LENGTH_LONG).show();
         }
     }
 }

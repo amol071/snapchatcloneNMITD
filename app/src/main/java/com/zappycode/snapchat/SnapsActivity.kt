@@ -8,6 +8,7 @@ import android.view.MenuItem
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ListView
+import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
@@ -87,7 +88,8 @@ class SnapsActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
-        mAuth.signOut()
+        //super.onBackPressed()
+        Toast.makeText(this,"Press logout from the menu to switch account", Toast.LENGTH_LONG).show();
+        return;
     }
 }
